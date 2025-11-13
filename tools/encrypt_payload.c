@@ -3,7 +3,7 @@
  * TOOL: PAYLOAD ENCRYPTION UTILITY
  * ============================================================================
  * 
- * Author: XvX Loader Project
+ * Author: 28Zaakypro@proton.me
  * Date: 2025-11-13
  * 
  * This tool encrypts a shellcode file using AES-256-CBC encryption.
