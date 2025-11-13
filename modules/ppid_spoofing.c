@@ -107,7 +107,7 @@ BOOL CreateProcessWithSpoofedPPID(
         return FALSE;
     }
 
-    // Ajouter l'attribut PARENT_PROCESS
+    // Ajouter l'attribut Paprent process
     if (!UpdateProcThreadAttribute(
             pAttributeList,
             0,
@@ -197,10 +197,6 @@ BOOL CreateProcessWithSpoofedPPID(
 
     return TRUE;
 }
-
-// ============================================================================
-// AFFICHAGE
-// ============================================================================
 
 VOID PrintPPIDSpoofResult(PPPID_SPOOF_RESULT result)
 {
