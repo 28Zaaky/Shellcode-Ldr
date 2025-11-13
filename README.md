@@ -110,6 +110,11 @@ If loader gets killed by Kaspersky/Defender during testing:
 - Add folder exclusion in AV
 - Compile with `-DPRODUCTION` (disables printf that can trigger)
 
+## Some good references 
+- https://redops.at/en/blog/direct-syscalls-vs-indirect-syscalls
+- https://blog.deeb.ch/posts/maldev-myths
+- https://cirosec.de/en/news/loader-dev-4-amsi-and-etw
+
 ## Contact
 
 28Zaakypro@proton.me
