@@ -5,7 +5,7 @@ Windows shellcode loader with AES-256-CBC encryption and EDR/sandbox evasion tec
 ## What is it?
 
 A loader that injects shellcode (like Meterpreter) into a legitimate Windows process (rundll32.exe) in stealth mode. 
-Bypasses EDR by using direct syscalls and unhooking NTDLL.
+Bypasses EDR by using indirect syscalls and unhooking NTDLL.
 
 ## Architecture
 
