@@ -12,7 +12,7 @@
     
 .NOTES
     Author: 28Zaakypro@proton.me
-    Version: 3.0-PROD
+    Version: 1.0
     Red Team Ready
 #>
 
