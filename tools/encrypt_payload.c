@@ -1,7 +1,6 @@
 /*
- * ============================================================================
- * TOOL: PAYLOAD ENCRYPTION UTILITY
- * ============================================================================
+ *
+ * PAYLOAD ENCRYPTION UTILITY
  * 
  * Author: 28Zaakypro@proton.me
  * Date: 2025-11-13
@@ -13,24 +12,20 @@
  *   3. IV as C array
  * 
  * COMPILATION:
- * ------------
  * gcc encrypt_payload.c ../modules/crypto.c -o encrypt_payload.exe -lAdvapi32
  * 
  * USAGE:
- * ------
  * encrypt_payload.exe <input_file>
  * 
  * Example:
  * encrypt_payload.exe ../payload/shellcode.bin
  * 
  * OUTPUT:
- * -------
  * Creates 3 files in ../payload/:
  *   - shellcode_aes.bin (encrypted shellcode)
  *   - shellcode_aes.txt (C array format for copy/paste)
  *   - key_iv.txt (key and IV in C array format)
  * 
- * ============================================================================
  */
 
 #include "../modules/crypto.h"
@@ -152,12 +147,6 @@ void WriteCArrayToFile(const char *filename, const char *varName, const BYTE *da
 
 int main(int argc, char *argv[])
 {
-    printf("\n");
-    printf("╔═══════════════════════════════════════════════════════════════╗\n");
-    printf("║        XvX LOADER - AES-256 PAYLOAD ENCRYPTION TOOL          ║\n");
-    printf("╚═══════════════════════════════════════════════════════════════╝\n");
-    printf("\n");
-
     if (argc != 2)
     {
         PrintUsage(argv[0]);
@@ -166,9 +155,7 @@ int main(int argc, char *argv[])
 
     const char *inputFile = argv[1];
 
-    // ========================================================================
     // STEP 1: READ SHELLCODE
-    // ========================================================================
     printf("[*] Reading shellcode from: %s\n", inputFile);
 
     BYTE *plainShellcode = NULL;
@@ -187,9 +174,7 @@ int main(int argc, char *argv[])
     }
     printf("\n\n");
 
-    // ========================================================================
     // STEP 2: GENERATE RANDOM KEY AND IV
-    // ========================================================================
     printf("[*] Generating random AES-256 key and IV...\n");
 
     BYTE key[AES_256_KEY_SIZE];
@@ -225,9 +210,7 @@ int main(int argc, char *argv[])
     }
     printf("\n\n");
 
-    // ========================================================================
     // STEP 3: ENCRYPT SHELLCODE
-    // ========================================================================
     printf("[*] Encrypting shellcode with AES-256-CBC...\n");
 
     BYTE *encryptedShellcode = NULL;
@@ -245,9 +228,7 @@ int main(int argc, char *argv[])
     printf("    Encrypted size: %lu bytes (including PKCS#7 padding)\n", encryptedSize);
     printf("    Padding added:  %lu bytes\n\n", encryptedSize - shellcodeSize);
 
-    // ========================================================================
     // STEP 4: SAVE ENCRYPTED SHELLCODE
-    // ========================================================================
     printf("[*] Saving encrypted shellcode...\n");
 
     // Binary file
@@ -262,9 +243,7 @@ int main(int argc, char *argv[])
     // C array file (for easy copy/paste into loader.c)
     WriteCArrayToFile("payload/shellcode_aes.txt", "encryptedShellcode", encryptedShellcode, encryptedSize);
 
-    // ========================================================================
     // STEP 5: SAVE KEY AND IV
-    // ========================================================================
     printf("[*] Saving key and IV...\n");
 
     FILE *keyIvFile = fopen("payload/key_iv.txt", "w");
@@ -300,9 +279,7 @@ int main(int argc, char *argv[])
     }
 
     printf("\n");
-    printf("╔═══════════════════════════════════════════════════════════════╗\n");
-    printf("║                    ENCRYPTION COMPLETE                        ║\n");
-    printf("╚═══════════════════════════════════════════════════════════════╝\n");
+    printf("ENCRYPTION COMPLET\n");
     printf("\n");
     printf("Next steps:\n");
     printf("  1. Copy contents of ../payload/shellcode_aes.txt into loader_v3.c\n");
