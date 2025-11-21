@@ -73,7 +73,7 @@ gcc -O2 -DPRODUCTION loader_v3.c modules\*.c modules\dosyscall.o -o Loader_PROD.
 ## OPSEC
 
 **Do:**
-- Test on filescan.io or antiscan.me (NOT VirusTotal which shares with AVs)
+- Test on filescan.io or antiscan.me
 - Change payload per target (rotate AES keys)
 - Check connection: `netstat -ano | findstr <port>`
 - Kill rundll32.exe process after use
@@ -106,7 +106,7 @@ cd modules
 gcc -c dosyscall.S -o dosyscall.o
 ```
 
-If loader gets killed by Kaspersky/Defender during testing:
+If loader gets killed by Kaspersky during testing:
 - Add folder exclusion in AV
 - Compile with `-DPRODUCTION` (disables printf that can trigger)
 
