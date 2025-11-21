@@ -119,7 +119,7 @@ static BOOL ValidateConfiguration(LOADER_CONFIG *config)
     if (config->delaySeconds == 0)
         return FALSE;
     
-// Allow higher threshold in debug mode (up to 200 for VM testing)
+// Allow higher threshold in debug mode
 #ifdef PRODUCTION
     if (config->suspicionThreshold > 100)
         return FALSE;
